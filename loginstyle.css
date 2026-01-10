@@ -1,0 +1,52 @@
+/* --- LOGIN PAGE STYLES --- */
+.login-body {
+    background: linear-gradient(135deg, #004e92 0%, #000428 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeIn Up 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-glass-card .logo i {
+    color: #004e92;
+    background: #e0f2fe;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Form Inputs Styling */
+.login-glass-card input, 
+.login-glass-card select {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+}
+
+.login-glass-card input:focus, 
+.login-glass-card select:focus {
+    border-color: #004e92;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 78, 146, 0.1);
+}
