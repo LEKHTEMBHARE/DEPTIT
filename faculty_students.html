@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Students | Faculty Panel</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Page Layout --- */
+        body { background: #f8fafc; display: flex; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px; height: 100vh; background: #0f172a; color: white;
+            position: fixed; padding: 20px; display: flex; flex-direction: column; transition: 0.3s; z-index: 100;
+        }
+        .sidebar-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 40px; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: #94a3b8; text-decoration: none; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+        
+        /* Main Area */
+        .main-content { margin-left: 260px; width: 100%; padding: 30px; }
+
+        /* Search Bar */
+        .toolbar {
+            background: white; padding: 20px; border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            display: flex; gap: 15px; margin-bottom: 25px;
+        }
+        .search-box { flex: 1; position: relative; }
+        .search-box input { width: 100%; padding: 12px 15px 12px 40px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; transition: 0.3s; }
+        .search-box input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .search-icon { position: absolute; left: 15px; top: 14px; color: #94a3b8; }
+
+        /* Student Grid */
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Student Card */
+        .student-card {
+            background: white; border-radius: 16px; padding: 25px; text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .student-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #bfdbfe; }
+        
+        .card-img {
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 0 auto 15px;
+        }
+        .card-name { font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+        .card-email { font-size: 0.85rem; color: #64748b; margin-bottom: 15px; overflow: hidden; text-overflow: ellipsis; }
+        
+        .status-badge {
+            background: #f0fdf4; color: #16a34a; font-size: 0.75rem; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 15px;
+        }
+
+        .card-actions { display: flex; gap: 10px; justify-content: center; }
+        .btn-mini {
+            flex: 1; padding: 8px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            border: none; cursor: pointer; transition: 0.2s;
+        }
+        .btn-view { background: #e0f2fe; color: #0284c7; }
+        .btn-view:hover { background: #0284c7; color: white; }
+        .btn-mail { background: #f1f5f9; color: #475569; width: 40px; flex: none; display: flex; align-items: center; justify-content: center; }
+        .btn-mail:hover { background: #cbd5e1; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-chalkboard-teacher"></i> TGPCET Faculty
+        </div>
+        
+        <nav>
+            <a href="faculty_dashboard.html" class="nav-link">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="faculty_students.html" class="nav-link active">
+                <i class="fas fa-users"></i> My Students
+            </a>
+            <a href="faculty_complaints.html" class="nav-link">
+                <i class="fas fa-tasks"></i> Complaints
+            </a>
+            <a href="#" onclick="logout()" class="nav-link" style="margin-top: auto; color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 700; color: #0f172a;">Student Directory</h1>
+                <p style="color: #64748b;">View and manage student details.</p>
+            </div>
+            <div style="background: white; padding: 5px 15px; border-radius: 30px; border: 1px solid #e2e8f0;">
+                <span style="font-weight: 600; font-size: 0.9rem; color: #475569;">Total Students: <b id="studentCount">0</b></span>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search by name or email...">
+            </div>
+            <button class="btn-mini btn-view" style="flex: none; width: auto; padding: 0 20px;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+        </div>
+
+        <div id="studentGrid" class="student-grid">
+            <p style="grid-column: span 3; text-align: center; color: #64748b;">Loading students...</p>
+        </div>
+
+    </main>
+
+    <script type="module" src="js/faculty_students.js"></script>
+
+</body>
+</html>

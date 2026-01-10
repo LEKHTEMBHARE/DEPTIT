@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | TGPCET</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Dashboard Specific Styles --- */
+        body { background: #f1f5f9; display: flex; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            position: fixed;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+        .sidebar-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 40px; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-link {
+            display: flex; align-items: center; gap: 15px;
+            padding: 12px 15px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+        .nav-link:hover, .nav-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+        .nav-link.logout { margin-top: auto; color: #ef4444; }
+        .nav-link.logout:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        /* Main Content */
+        .main-content { margin-left: 260px; width: 100%; padding: 30px; }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #e2e8f0;
+        }
+        .stat-info h3 { font-size: 2rem; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
+        .stat-info p { color: #64748b; font-size: 0.9rem; }
+        .stat-icon {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Recent Table */
+        .table-container { background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .custom-table { width: 100%; border-collapse: collapse; }
+        .custom-table th { text-align: left; padding: 15px; color: #64748b; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; }
+        .custom-table td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; }
+        .role-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .badge-student { background: #e0f2fe; color: #0284c7; }
+        .badge-faculty { background: #f0fdf4; color: #16a34a; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+        </div>
+        
+        <nav>
+            <a href="admin_dashboard.html" class="nav-link active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin_users.html" class="nav-link">
+                <i class="fas fa-users"></i> Manage Users
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-file-alt"></i> Complaints <span style="background:red; color:white; padding:2px 6px; border-radius:10px; font-size:0.7rem; margin-left:auto;">New</span>
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            
+            <a href="#" onclick="logout()" class="nav-link logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 700; color: #0f172a;">Dashboard Overview</h1>
+                <p style="color: #64748b;">Welcome back, Administrator.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; background: white; padding: 5px 15px; border-radius: 30px; border: 1px solid #e2e8f0;">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff" style="width: 35px; height: 35px; border-radius: 50%;">
+                <span style="font-weight: 600; font-size: 0.9rem;">System Admin</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3 id="studentCount">0</h3>
+                    <p>Total Students</p>
+                </div>
+                <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3 id="facultyCount">0</h3>
+                    <p>Faculty Members</p>
+                </div>
+                <div class="stat-icon" style="background: #f0fdf4; color: #16a34a;">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>0</h3>
+                    <p>Pending Complaints</p>
+                </div>
+                <div class="stat-icon" style="background: #fef2f2; color: #ef4444;">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="section-header">
+                <h3 style="font-size: 1.1rem; font-weight: 700;">Recently Registered Users</h3>
+                <a href="admin_users.html" style="color: #2563eb; font-weight: 600; font-size: 0.9rem;">View All</a>
+            </div>
+            
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody id="recentUsersTable">
+                    <tr><td colspan="3">Loading data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script type="module" src="js/admin_dashboard.js"></script>
+
+</body>
+</html>

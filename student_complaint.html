@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaints | TGPCET IT</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Layout --- */
+        body { background: #f8fafc; display: flex; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px; height: 100vh; background: #0f172a; color: white;
+            position: fixed; padding: 20px; display: flex; flex-direction: column; transition: 0.3s; z-index: 100;
+        }
+        .sidebar-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 40px; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: #94a3b8; text-decoration: none; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+        /* Main Content */
+        .main-content { margin-left: 260px; width: 100%; padding: 30px; }
+
+        /* Form Card */
+        .form-card {
+            background: white; border-radius: 16px; padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+        .form-label { display: block; font-weight: 600; color: #475569; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-input {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;
+            font-size: 0.95rem; margin-bottom: 20px; outline: none; transition: 0.3s; background: #f8fafc;
+        }
+        .form-input:focus { border-color: #3b82f6; background: white; }
+
+        /* History List */
+        .history-item {
+            background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;
+            margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .h-title { font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+        .h-meta { font-size: 0.85rem; color: #64748b; }
+        
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .status-pending { background: #fef2f2; color: #ef4444; }
+        .status-resolved { background: #f0fdf4; color: #16a34a; }
+
+        .btn-submit {
+            background: #2563eb; color: white; border: none; padding: 12px 30px; border-radius: 10px;
+            font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-submit:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-graduation-cap"></i> TGPCET Student
+        </div>
+        
+        <nav>
+            <a href="student_dashboard.html" class="nav-link">
+                <i class="fas fa-home"></i> Home Feed
+            </a>
+            <a href="student_profile.html" class="nav-link">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="student_search.html" class="nav-link">
+                <i class="fas fa-search"></i> Find Students
+            </a>
+            <a href="student_complaint.html" class="nav-link active">
+                <i class="fas fa-exclamation-circle"></i> Complaints
+            </a>
+            <a href="#" onclick="logout()" class="nav-link" style="margin-top: auto; color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <h2 style="margin-bottom: 10px; font-weight: 700; color: #0f172a;">Help & Support</h2>
+        <p style="color: #64748b; margin-bottom: 30px;">Report issues directly to the administration.</p>
+
+        <div class="form-card">
+            <h3 style="margin-bottom: 20px; color: #0f172a;">Register New Complaint</h3>
+            
+            <form id="complaintForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label class="form-label">Subject</label>
+                        <input type="text" id="compSubject" class="form-input" placeholder="Ex: Lab PC Not Working" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Category</label>
+                        <select id="compCategory" class="form-input">
+                            <option>Hardware Issue</option>
+                            <option>Software / WiFi</option>
+                            <option>Library / Books</option>
+                            <option>Exam / Results</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="form-label">Description</label>
+                <textarea id="compDesc" class="form-input" rows="4" placeholder="Describe the issue in detail..." required></textarea>
+
+                <button type="submit" class="btn-submit">Submit Complaint</button>
+            </form>
+        </div>
+
+        <h3 style="margin-bottom: 20px; color: #0f172a;">Your Complaint History</h3>
+        
+        <div id="historyList">
+            <p style="text-align: center; color: #94a3b8; margin-top: 30px;">Loading your history...</p>
+        </div>
+
+    </main>
+
+    <script type="module" src="js/student_complaint.js"></script>
+
+</body>
+</html>

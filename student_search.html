@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Peers | TGPCET IT</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Layout --- */
+        body { background: #f8fafc; display: flex; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px; height: 100vh; background: #0f172a; color: white;
+            position: fixed; padding: 20px; display: flex; flex-direction: column; transition: 0.3s; z-index: 100;
+        }
+        .sidebar-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 40px; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: #94a3b8; text-decoration: none; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+        /* Main Content */
+        .main-content { margin-left: 260px; width: 100%; padding: 30px; }
+
+        /* Search Bar */
+        .search-container {
+            background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 30px;
+        }
+        .search-input-group { position: relative; display: flex; align-items: center; }
+        .search-input {
+            width: 100%; padding: 15px 15px 15px 50px; border: 2px solid #e2e8f0; border-radius: 12px;
+            font-size: 1rem; outline: none; transition: 0.3s; background: #f8fafc;
+        }
+        .search-input:focus { border-color: #3b82f6; background: white; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .search-icon { position: absolute; left: 18px; color: #94a3b8; font-size: 1.2rem; }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px;
+        }
+
+        /* Profile Card */
+        .result-card {
+            background: white; border-radius: 16px; padding: 30px 20px; text-align: center;
+            border: 1px solid #e2e8f0; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .result-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); border-color: #bfdbfe; }
+        
+        .card-img {
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            border: 4px solid #f8fafc; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card-name { font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+        .card-bio { font-size: 0.85rem; color: #64748b; margin-bottom: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .skill-badge {
+            background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 600; display: inline-block; margin-bottom: 15px;
+        }
+
+        .btn-view {
+            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;
+            background: white; color: #0f172a; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-view:hover { background: #0f172a; color: white; border-color: #0f172a; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-graduation-cap"></i> TGPCET Student
+        </div>
+        
+        <nav>
+            <a href="student_dashboard.html" class="nav-link">
+                <i class="fas fa-home"></i> Home Feed
+            </a>
+            <a href="student_profile.html" class="nav-link">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="student_search.html" class="nav-link active">
+                <i class="fas fa-search"></i> Find Students
+            </a>
+            <a href="student_complaint.html" class="nav-link">
+                <i class="fas fa-exclamation-circle"></i> Complaints
+            </a>
+            <a href="#" onclick="logout()" class="nav-link" style="margin-top: auto; color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div style="margin-bottom: 30px;">
+            <h1 style="font-size: 1.8rem; font-weight: 700; color: #0f172a;">Student Directory</h1>
+            <p style="color: #64748b;">Connect with your peers and explore their skills.</p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-input-group">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by Name, Skill (e.g., Java, React), or Email...">
+            </div>
+        </div>
+
+        <div id="resultsGrid" class="results-grid">
+            <p style="grid-column: span 3; text-align: center; color: #64748b; margin-top: 50px;">
+                <i class="fas fa-spinner fa-spin"></i> Loading students...
+            </p>
+        </div>
+
+    </main>
+
+    <script type="module" src="js/student_search.js"></script>
+
+</body>
+</html>

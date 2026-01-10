@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Feed | TGPCET</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* --- Layout --- */
+        body { background: #f8fafc; display: flex; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Sidebar Left */
+        .sidebar {
+            width: 260px; height: 100vh; background: #0f172a; color: white;
+            position: fixed; padding: 20px; display: flex; flex-direction: column; transition: 0.3s; z-index: 100;
+        }
+        .sidebar-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 40px; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        .nav-link { display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: #94a3b8; text-decoration: none; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+        /* Main Feed (Center) */
+        .main-content { margin-left: 260px; margin-right: 300px; width: 100%; padding: 30px; }
+
+        /* Right Sidebar (Widgets) */
+        .sidebar-right {
+            width: 300px; height: 100vh; background: white; border-left: 1px solid #e2e8f0;
+            position: fixed; right: 0; top: 0; padding: 25px; overflow-y: auto;
+        }
+
+        /* Create Post Card */
+        .create-post {
+            background: white; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 25px;
+        }
+        .cp-input {
+            width: 100%; border: none; background: #f1f5f9; padding: 15px; border-radius: 12px;
+            margin-bottom: 15px; outline: none; resize: none; font-family: inherit;
+        }
+        .cp-actions { display: flex; justify-content: space-between; align-items: center; }
+        .btn-icon-text { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 8px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; }
+        .btn-icon-text:hover { background: #e2e8f0; color: #0f172a; }
+
+        /* Feed Post Card */
+        .post-card {
+            background: white; border-radius: 16px; border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 25px; overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+        .post-header { padding: 15px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f1f5f9; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .post-author h4 { font-size: 0.95rem; color: #0f172a; margin: 0; }
+        .post-meta { font-size: 0.8rem; color: #94a3b8; }
+        .post-body { padding: 20px; color: #334155; line-height: 1.6; }
+        .post-img { width: 100%; height: auto; display: block; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+        .post-footer { padding: 10px 20px; display: flex; gap: 20px; }
+        .action-btn { background: none; border: none; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; }
+        .action-btn:hover { color: #2563eb; }
+
+        /* Right Sidebar Widgets */
+        .widget { margin-bottom: 30px; }
+        .widget-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .notice-item {
+            padding: 12px; background: #f8fafc; border-radius: 10px; border-left: 3px solid #3b82f6; margin-bottom: 10px;
+        }
+        .notice-date { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 4px; }
+        .notice-text { font-size: 0.9rem; color: #334155; font-weight: 500; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) {
+            .sidebar-right { display: none; }
+            .main-content { margin-right: 0; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-graduation-cap"></i> TGPCET Student
+        </div>
+        
+        <nav>
+            <a href="student_dashboard.html" class="nav-link active">
+                <i class="fas fa-home"></i> Home Feed
+            </a>
+            <a href="student_profile.html" class="nav-link">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="student_search.html" class="nav-link">
+                <i class="fas fa-search"></i> Find Students
+            </a>
+            <a href="student_complaint.html" class="nav-link">
+                <i class="fas fa-exclamation-circle"></i> Complaints
+            </a>
+            <a href="#" onclick="logout()" class="nav-link" style="margin-top: auto; color: #ef4444;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="header-mobile" style="display: none; margin-bottom: 20px;">
+            <h2 style="font-weight: 700; color: #0f172a;">Student Feed</h2>
+        </div>
+
+        <div class="create-post">
+            <div style="display: flex; gap: 15px;">
+                <img id="myAvatarSmall" src="https://ui-avatars.com/api/?name=User" style="width: 45px; height: 45px; border-radius: 50%;">
+                <div style="width: 100%;">
+                    <textarea id="postContent" class="cp-input" placeholder="What have you achieved today?"></textarea>
+                    
+                    <input type="file" id="postImageInput" accept="image/*" style="display: none;">
+                    
+                    <div class="cp-actions">
+                        <button class="btn-icon-text" onclick="document.getElementById('postImageInput').click()">
+                            <i class="fas fa-image" style="color: #10b981;"></i> Photo / Cert
+                        </button>
+                        <button id="btnPost" class="btn-primary" style="padding: 8px 25px; border-radius: 8px; border:none; background: #2563eb; color: white; cursor: pointer;">
+                            Post
+                        </button>
+                    </div>
+                    <p id="fileNameDisplay" style="font-size: 0.8rem; color: #64748b; margin-top: 5px;"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="postFeed">
+            <p style="text-align: center; color: #94a3b8; margin-top: 40px;">Loading posts...</p>
+        </div>
+
+    </main>
+
+    <aside class="sidebar-right">
+        
+        <div class="widget" style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9;">
+            <img id="myAvatarBig" src="https://ui-avatars.com/api/?name=User" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #e2e8f0; margin-bottom: 10px;">
+            <h3 id="myName" style="color: #0f172a; font-size: 1.1rem; margin-bottom: 5px;">Student Name</h3>
+            <p id="myBio" style="color: #64748b; font-size: 0.9rem;">Student at TGPCET</p>
+            <div style="margin-top: 15px;">
+                <a href="student_profile.html" style="font-size: 0.85rem; color: #2563eb; font-weight: 600; text-decoration: none;">View Profile</a>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">
+                <span>📢 Department Notices</span>
+                <span style="font-size: 0.8rem; color: #2563eb; cursor: pointer;">View All</span>
+            </div>
+            
+            <div id="noticeBoard">
+                <p style="font-size: 0.85rem; color: #94a3b8;">Loading notices...</p>
+            </div>
+        </div>
+
+    </aside>
+
+    <script type="module" src="js/student_dashboard.js"></script>
+
+</body>
+</html>
