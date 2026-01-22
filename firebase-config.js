@@ -7,7 +7,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 // 2. Your Web App's Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCnStSKczf7HTp8koJ1TtLyS7sFJlSd63g",
+  apiKey: "---PUT YOUR API KEY HERE---",
   authDomain: "itportal-beafa.firebaseapp.com",
   projectId: "itportal-beafa",
   storageBucket: "itportal-beafa.firebasestorage.app",
@@ -20,4 +20,5 @@ const app = initializeApp(firebaseConfig);
 
 // 4. Export Auth & Database (Taaki baaki files inhe use kar sakein)
 export const auth = getAuth(app);
+
 export const db = getFirestore(app);
